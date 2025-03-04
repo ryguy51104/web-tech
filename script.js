@@ -1,7 +1,9 @@
+console.log("hello cruel world");
 
-showMessage;
 function showMessage() {
-    console.log("hello cruel world")
+    console.log("hello cruel world");
     alert("Hello from JavaScript!");
 }
-console.log("hello cruel world")
+
+// Call the function to execute it
+showMessage();
