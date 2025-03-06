@@ -11,8 +11,12 @@ export const register = async (req, res) => {
     const user = req.body;
 
     // checking if the user data is valid
-    if (!user.username || !user.password) {
+    if (!user.username || !user.password || !user.confirmPassword) {
         res.status(400).send('Username and password are required');
+    }
+    // checking if the password and confirm password are the same
+    if (user.password !== user.confirmPassword) {
+        res.status(400).send('Passwords do not match');
     }
 
     try {
