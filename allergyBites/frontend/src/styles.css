@@ -1,0 +1,34 @@
+.container {
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #ddd;
+}
+
+.auth-buttons .btn {
+  margin-left: 10px;
+  padding: 5px 10px;
+  text-decoration: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+}
+
+.auth-buttons .btn:hover {
+  background-color: #0056b3;
+}
+
+.home-container {
+  margin-top: 50px;
+}
+
+.recipe-container {
+  margin-top: 50px;
+}

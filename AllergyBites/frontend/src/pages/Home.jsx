@@ -1,17 +1,14 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-const HomePage = () => {
-    const navigate = useNavigate();
-    return (
-        <div>
-            <h2>Welcome to the Home Page</h2>
-            {/* Redirects to the register page */}
-            <button onClick={() => navigate('/register')}>No Account yet? Register here</button>
-            {/* Redirects to the login page */}
-            <button onClick={() => navigate('/login')}>Already have an Account? Login here</button>
-        </div>
-    );
+const Home = () => {
+  return (
+    <div className="home-container">
+      <h2>Welcome to My App</h2>
+      <p>Explore recipes and more!</p>
+      <Link to="/recipe" className="recipe-link">Recipes</Link>
+    </div>
+  );
 };
 
-export default HomePage;
+export default Home;
