@@ -12,16 +12,19 @@ export const register = async (req, res) => {
 
     // checking if the user data is valid
     if (!user.username || !user.password || !user.confirmPassword) {
+        // sending a response
         res.status(400).send('Username and password are required');
     }
     // checking if the password and confirm password are the same
     if (user.password !== user.confirmPassword) {
-        res.status(400).send('Passwords do not match');
+        // sending a response
+        res.status(400).json({ success: false, message: 'Passwords do not match' });
     }
 
     try {
         const existingUser = await User.findOne({ username: user.username });
         if (existingUser) {
+            // sending a response
             return res.status(400).json({ success: false, message: 'User already exists' });
         }
         // creating a new user
@@ -29,9 +32,11 @@ export const register = async (req, res) => {
         // saving the user to the database
         await newUser.save();
 
+        // sending a response
         res.status(201).json({ success: true, message: "User created successfully" });
     } catch (error) {
         console.error("Error while creating user", error);
+        // sending a response
         res.status(500).json({ success: false, message: "Server error" });
     }
 }
@@ -43,13 +48,15 @@ export const login = async (req, res) => {
     // checking if the username and password are valid
     const user = await User.findOne({ username });
     if (!user) {
-        return res.status(400).json({ message: 'User not found' });
+        // sending a response
+        return res.status(400).json({ success:false, message: 'User not found' });
     }
 
     // checking if the password is valid
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-        return res.status(400).json({ message: 'Invalid password' });
+        // sending a response
+        return res.status(400).json({ success: false, message: 'Invalid password' });
     }
 
     // creating a token
@@ -57,7 +64,7 @@ export const login = async (req, res) => {
         expiresIn: '1h',
     });
 
-    res.status(200).json({ message: 'Login successful', token });
+    res.status(200).json({ success: true, message: 'Login successful', token });
 }
 
 export const changeUser = async (req, res) => {
@@ -70,6 +77,7 @@ export const changeUser = async (req, res) => {
 
     // check if id is valid
     if (!mongoose.Types.ObjectId.isValid(id)) {
+        // sending a response
         return res.status(404).json({ success: false, message: "Invalid user id" });
     }
 
@@ -78,6 +86,7 @@ export const changeUser = async (req, res) => {
         // find user by id
         const user = await User.findById(id);
         if (!user) {
+            // sending a response
             return res.status(404).json({ success: false, message: "User not found" });
         }
 
@@ -87,8 +96,10 @@ export const changeUser = async (req, res) => {
 
         await user.save();
 
+        // sending a response
         res.status(200).json({ success: true, data: user, message: "Password updated successfully" });
     } catch (error) {
+        // sending a response
         res.status(500).json({ success: false, message: "Server error" });
     }
 }
@@ -108,11 +119,14 @@ export const deleteUser = async (req, res) => {
         // check if user exists
         const user = await User.findByIdAndDelete(id);
         if (!user) {
+            // sending a response
             return res.status(404).json({ success: false, message: "User not found" });
         }
 
+        // sending a response
         res.status(200).json({ success: true, message: "User deleted successfully" });
     } catch (error) {
+        // sending a response
         res.status(500).json({ success: false, message: "Servererror" });
     }
 

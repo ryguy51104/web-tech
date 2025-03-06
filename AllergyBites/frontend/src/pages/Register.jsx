@@ -12,18 +12,28 @@ const Register = () => {
     const handleRegister = async (e) => {
         e.preventDefault();
 
+        // check if passwords match
         if (password !== confirmPassword) {
+            setError('Passwords do not match');
             return;
         }
 
         try {
-            await axios.post('http://localhost:5000/api/users/register', {
+            // axios is used so that backend and frontend can communicate
+            // snes a POST request to the server with data
+            const response = await axios.post('http://localhost:5000/api/users/register', {
                 username,
                 password,
                 confirmPassword,
             });
 
-            navigate('/login');
+            // if the response is successful, navigate to the login page
+            if (response.data.success) {
+                navigate('/login');
+            // if the response is unsuccessful, display an error message
+            } else {
+                setError(response.data.message);
+            }
         } catch (error) {
             setError('Error registering user');
         }
@@ -32,10 +42,10 @@ const Register = () => {
     return (
         <div>
             <h2>Register</h2>
-            {error && <div style={{ color: 'red' }}>{error}</div>}
             <form onSubmit={handleRegister}>
                 <div>
                     <label>Username:</label>
+                    {/* captures the username input */}
                     <input
                         type="text"
                         value={username}
@@ -45,6 +55,7 @@ const Register = () => {
                 </div>
                 <div>
                     <label>Password:</label>
+                    {/* captures the password input */}
                     <input
                         type="password"
                         value={password}
@@ -53,6 +64,7 @@ const Register = () => {
                     />
                 </div>
                 <div>
+                    {/* captures the confirm password input */}
                     <label>Confirm Password:</label>
                     <input
                         type="password"
@@ -63,6 +75,9 @@ const Register = () => {
                 </div>
                 <button type="submit">Register</button>
             </form>
+            {/* displays error message */}
+            {error && <div style={{ color: 'red' }}>{error}</div>}
+            {/* navigates to the login page */}
             <button onClick={() => navigate('/login')}>Already have an Account? Login here</button>
         </div>
     );
