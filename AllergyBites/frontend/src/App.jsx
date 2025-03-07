@@ -9,7 +9,7 @@ import PrivateRoute from './pages/PrivateRoute';
 function App() {
   return (
     <div>
-      <h1>My App</h1>
+      <h1>AllergyBites</h1>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
