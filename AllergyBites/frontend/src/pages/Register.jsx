@@ -30,7 +30,7 @@ const Register = () => {
             // if the response is successful, navigate to the login page
             if (response.data.success) {
                 navigate('/login');
-            // if the response is unsuccessful, display an error message
+                // if the response is unsuccessful, display an error message
             } else {
                 setError(response.data.message);
             }

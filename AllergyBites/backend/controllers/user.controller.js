@@ -147,22 +147,17 @@ export const deleteUser = async (req, res) => {
     }
 }
 
-export const isAuthenticated = async (req, res, next) => {
-    // get token from cookies
-    const token = req.cookies.jwt;
-
-    // check if token exists
-    if (!token) {
-        return res.status(401).json({ success: false, message: "Unauthorized" });
-    }
-
+export const getProfile = async (req, res) => {
     try {
-        // verify token
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        // set user in request
-        req.user = decoded;
-        next();
+        // Fetch user from database
+        const user = await User.findById(req.user.id).select("-password");
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        res.status(200).json({ success: true, user });
     } catch (error) {
-        res.status(401).json({ success: false, message: "Invalid token" });
+        res.status(500).json({ success: false, message: "Server error" });
     }
 };
