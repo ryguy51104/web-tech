@@ -20,24 +20,20 @@ const Login = () => {
         try {
             // sends a POST request to the server with the username and password and stores
             // the response in the response variable
-            const response = await axios.post('http://localhost:5000/api/users/login', {
-                username,
-                password,
-            });
+            const response = await axios.post('http://localhost:5000/api/users/login',
+                { username, password, },
+                // enable cookies
+                { withCredentials: true, }
+            );
 
-            // stores the token in the local storage and navigates to the home page
-            const token = response.data.token;
-            localStorage.setItem('jwtToken', token);
-            
             // successfully logged in, navigate to the home page
             if (response.data.success) {
-                const token = response.data.token;
-                localStorage.setItem('jwtToken', token);
                 navigate('/');
             
             // failed to log in, display an error message and reset password field
             } else {
                 setError(response.data.message);
+                console.log(response.data);
                 setPassword('');
             }
         } catch (error) {

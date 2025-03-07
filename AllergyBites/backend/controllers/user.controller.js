@@ -9,16 +9,19 @@ dotenv.config();
 export const register = async (req, res) => {
     // getting the user data from the request
     const user = req.body;
+    // transform the username to lowercase
+    const username = user.username.toLowerCase();
+    user.username = username;
 
     // checking if the user data is valid
     if (!user.username || !user.password || !user.confirmPassword) {
         // sending a response
-        res.status(400).send('Username and password are required');
+        return res.status(400).send('Username and password are required');
     }
     // checking if the password and confirm password are the same
     if (user.password !== user.confirmPassword) {
         // sending a response
-        res.status(400).json({ success: false, message: 'Passwords do not match' });
+        return res.status(400).json({ success: false, message: 'Passwords do not match' });
     }
 
     try {
@@ -43,7 +46,8 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
     // getting the username and password from the request body
-    const { username, password } = req.body;
+    const username = req.body.username.toLowerCase();
+    const password = req.body.password;
 
     // checking if the username and password are valid
     const user = await User.findOne({ username });
@@ -60,12 +64,24 @@ export const login = async (req, res) => {
     }
 
     // creating a token
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-        expiresIn: '1h',
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    // setting cookie
+    res.cookie('jwt', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production' ? true : false,
+        sameSite: 'strict',
+        maxAge: 60 * 60 * 1000,
     });
 
-    res.status(200).json({ success: true, message: 'Login successful', token });
+    res.status(200).json({ success: true, message: 'Login successful' });
 }
+
+export const logout = async (req, res) => {
+    // clear cookies json web token to logout
+    res.clearCookie('jwt');
+    res.status(200).json({ success: true, message: 'Logged out successfully' });
+};
+
 
 export const changeUser = async (req, res) => {
 
@@ -129,5 +145,24 @@ export const deleteUser = async (req, res) => {
         // sending a response
         res.status(500).json({ success: false, message: "Servererror" });
     }
-
 }
+
+export const isAuthenticated = async (req, res, next) => {
+    // get token from cookies
+    const token = req.cookies.jwt;
+
+    // check if token exists
+    if (!token) {
+        return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+
+    try {
+        // verify token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        // set user in request
+        req.user = decoded;
+        next();
+    } catch (error) {
+        res.status(401).json({ success: false, message: "Invalid token" });
+    }
+};

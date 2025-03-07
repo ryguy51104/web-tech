@@ -20,7 +20,7 @@ const Register = () => {
 
         try {
             // axios is used so that backend and frontend can communicate
-            // snes a POST request to the server with data
+            // send a POST request to the server with data
             const response = await axios.post('http://localhost:5000/api/users/register', {
                 username,
                 password,
@@ -49,7 +49,7 @@ const Register = () => {
                     <input
                         type="text"
                         value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        onChange={(e) => setUsername(e.target.value.toLowerCase())}
                         required
                     />
                 </div>
