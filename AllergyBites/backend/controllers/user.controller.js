@@ -83,42 +83,61 @@ export const logout = async (req, res) => {
 };
 
 
-export const changeUser = async (req, res) => {
-
-    // get id from request parameters
-    const { id } = req.params;
-
-    // get password from request body
-    const { password } = req.body;
-
-    // check if id is valid
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        // sending a response
-        return res.status(404).json({ success: false, message: "Invalid user id" });
-    }
-
-    // change password
+export const changePassword = async (req, res) => {
     try {
-        // find user by id
+        // Get user ID from JWT token
+        const id = req.user.id;
+
+        // Get old and new password from request body
+        const { oldPassword, newPassword } = req.body;
+
+        // Check if ID is valid
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(404).json({ success: false, message: "Invalid user ID" });
+        }
+
+        // Find user by ID
         const user = await User.findById(id);
         if (!user) {
-            // sending a response
             return res.status(404).json({ success: false, message: "User not found" });
         }
 
-        // updating and hashing the password
-        const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(password, salt);
+        // Check if old password is correct
+        const isMatch = await bcrypt.compare(oldPassword, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ success: false, message: "Old password is incorrect" });
+        }
 
+        // check if new password is the same as the old password
+        const isSame = await bcrypt.compare(newPassword, user.password);
+        if (isSame) {
+            return res.status(400).json({ success: false, message: 'New password cannot be the same as the old one' });
+        }
+
+        // Hash new password
+        user.password = newPassword;
+
+        // Save updated user
         await user.save();
 
-        // sending a response
-        res.status(200).json({ success: true, data: user, message: "Password updated successfully" });
+        // update the token
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        res.clearCookie('jwt');
+        res.cookie('jwt', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production' ? true : false,
+            sameSite: 'strict',
+            maxAge: 60 * 60 * 1000,
+        });
+
+
+        res.status(200).json({ success: true, message: "Password updated successfully" });
     } catch (error) {
-        // sending a response
         res.status(500).json({ success: false, message: "Server error" });
     }
-}
+};
+
 
 export const deleteUser = async (req, res) => {
 
@@ -152,6 +171,7 @@ export const getProfile = async (req, res) => {
         // Fetch user from database
         const user = await User.findById(req.user.id).select("-password");
 
+        // Check if user exists
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found" });
         }

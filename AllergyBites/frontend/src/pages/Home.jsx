@@ -1,8 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+// Home pageg
 const HomePage = () => {
+    // is used to navigate to different pages
     const navigate = useNavigate();
+    // returns html code
     return (
         <div>
             <h2>Welcome to the Home Page</h2>

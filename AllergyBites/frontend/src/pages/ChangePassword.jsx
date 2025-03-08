@@ -2,64 +2,68 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const Register = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+const ChangePassword = () => {
+    const [oldPassword, setOldPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    const handleRegister = async (e) => {
+    const handlePasswordChange = async (e) => {
         e.preventDefault();
 
         // check if passwords match
-        if (password !== confirmPassword) {
+        if (newPassword !== confirmPassword) {
             setError('Passwords do not match');
             return;
         }
 
         try {
             // axios is used so that backend and frontend can communicate
-            // send a POST request to the server with data
-            const response = await axios.post('http://localhost:5000/api/users/register', {
-                username,
-                password,
-                confirmPassword,
-            });
+            // send a PUT request to the server with data
+            const response = await axios.put('http://localhost:5000/api/users/change-password',
+                { oldPassword, newPassword }
+            );
 
-            // if the response is successful, navigate to the login page
+            // if the response is successful, navigate to the home page
             if (response.data.success) {
-                navigate('/login');
+                navigate('/');
                 // if the response is unsuccessful, display an error message
             } else {
                 setError(response.data.message);
+                setOldPassword('');
+                setNewPassword('');
+                setConfirmPassword('');
             }
         } catch (error) {
-            setError('Error registering user');
+            setError('Error changing password user');
+            setOldPassword('');
+            setNewPassword('');
+            setConfirmPassword('');
         }
     };
 
     return (
         <div>
-            <h2>Register</h2>
-            <form onSubmit={handleRegister}>
+            <h2>Change Password</h2>
+            <form onSubmit={handlePasswordChange}>
                 <div>
-                    <label>Username:</label>
-                    {/* captures the username input */}
+                    <label>Old Password:</label>
+                    {/* captures the old password input */}
                     <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        type="password"
+                        value={oldPassword}
+                        onChange={(e) => setOldPassword(e.target.value)}
                         required
                     />
                 </div>
                 <div>
-                    <label>Password:</label>
+                    <label>New Password:</label>
                     {/* captures the password input */}
                     <input
                         type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
                         required
                     />
                 </div>
@@ -73,14 +77,12 @@ const Register = () => {
                         required
                     />
                 </div>
-                <button type="submit">Register</button>
+                <button type="submit">Change Password</button>
             </form>
             {/* displays error message */}
             {error && <div style={{ color: 'red' }}>{error}</div>}
-            {/* navigates to the login page */}
-            <button onClick={() => navigate('/login')}>Already have an Account? Login here</button>
         </div>
     );
 };
 
-export default Register;
+export default ChangePassword;

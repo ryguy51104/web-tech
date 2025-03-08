@@ -1,5 +1,5 @@
 import express from 'express';
-import { register, login, changeUser, logout, deleteUser, getProfile } from "../controllers/user.controller.js";
+import { register, login, changePassword, logout, deleteUser, getProfile } from "../controllers/user.controller.js";
 import authMiddleware from '../middleware/auth.middleware.js';
 
 const router = express.Router();
@@ -9,7 +9,7 @@ router.post('/register', register);
 // route to login
 router.post('/login', login);
 // change password
-router.put('/:id', changeUser);
+router.put('/change-password', authMiddleware, changePassword);
 // route to delete users
 router.delete('/:id', deleteUser);
 // profile
