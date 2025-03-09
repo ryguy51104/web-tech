@@ -1,27 +1,25 @@
-// importing external packages
-import express from "express";
-import dotenv from "dotenv";
-import { connectDB } from "./config/db.js";
-import cors from "cors";
+// server.js
+import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import { connectDB } from './config/db.js';
+import userRoutes from './routes/user.routes.js';
 
-import userRoutes from "./routes/user.route.js";
-
-// loading environment variables
 dotenv.config();
 
-// creating an express app
 const app = express();
 const PORT = process.env.PORT || 5000;
-// Enable Cors
+
+// Enable CORS
 app.use(cors());
 
-// allows to accept json data in the request body
+// Allow JSON data in the request body
 app.use(express.json());
 
-app.use("/api/users", userRoutes);
+// Use the routes
+app.use('/api/users', userRoutes);
 
-// starting the server
 app.listen(PORT, () => {
-    connectDB();
-    console.log('Server is running on port ' + PORT);
+  connectDB();
+  console.log('Server is running on port ' + PORT);
 });

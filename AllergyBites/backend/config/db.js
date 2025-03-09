@@ -1,19 +1,17 @@
-// importing external packages
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 
-// async function to connect to the database
+dotenv.config(); // Ensure environment variables are loaded
+
 export const connectDB = async () => {
-    // try catch block to handle errors
     try {
-        // connecting to the database
-        const conn = await mongoose.connect(process.env.MONGO_URI);
-        // printing the connection host
+        const conn = await mongoose.connect(process.env.MONGO_URI, {
+
+        });
+
         console.log(`MongoDB Connected: ${conn.connection.host}`);
-        // if there is an error, print the error message
     } catch (error) {
-        // printing the error message
-        console.error(`Error: ${error.message}`);
-        // exiting the process with error code
-        process.exit(1);
+        console.error("MongoDB Connection Error:", error.message);
+        process.exit(1); // Exit process with failure
     }
-}
+};
