@@ -42,6 +42,9 @@ const Profile = () => {
                 navigate("/change-password");
             }}>Change Password</button>
             <button onClick={() => {
+                navigate("/");
+            }}>Home</button>
+            <button onClick={() => {
                 axios.post("http://localhost:5000/api/users/logout", {}, { withCredentials: true })
                     .then(() => navigate("/login"))
                     .catch(err => console.error("Logout error:", err));

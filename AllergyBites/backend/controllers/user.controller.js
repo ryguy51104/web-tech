@@ -69,7 +69,7 @@ export const login = async (req, res) => {
     res.cookie('jwt', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production' ? true : false,
-        sameSite: 'strict',
+        sameSite: 'Lax',
         maxAge: 60 * 60 * 1000,
     });
 
@@ -127,7 +127,7 @@ export const changePassword = async (req, res) => {
         res.cookie('jwt', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production' ? true : false,
-            sameSite: 'strict',
+            sameSite: 'Lax',
             maxAge: 60 * 60 * 1000,
         });
 

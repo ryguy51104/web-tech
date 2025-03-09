@@ -22,7 +22,8 @@ const ChangePassword = () => {
             // axios is used so that backend and frontend can communicate
             // send a PUT request to the server with data
             const response = await axios.put('http://localhost:5000/api/users/change-password',
-                { oldPassword, newPassword }
+                { oldPassword, newPassword },
+                { withCredentials: true }
             );
 
             // if the response is successful, navigate to the home page
