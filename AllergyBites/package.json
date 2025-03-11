@@ -1,7 +1,6 @@
 {
   "name": "allergybites",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon backend/server.js",
@@ -13,6 +12,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "allergybites": "file:",
+    "axios": "^1.8.2",
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
     "cookieparser": "^0.1.0",
@@ -21,9 +22,10 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.12.1",
-    "vercel": "^41.3.2"
+    "vercel": "^41.0.2"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
-  }
+  },
+  "description": ""
 }
