@@ -69,7 +69,7 @@ export const login = async (req, res) => {
     res.cookie('jwt', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production' ? true : false,
-        sameSite: 'strict',
+        sameSite: 'Lax',
         maxAge: 60 * 60 * 1000,
     });
 
@@ -127,7 +127,7 @@ export const changePassword = async (req, res) => {
         res.cookie('jwt', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production' ? true : false,
-            sameSite: 'strict',
+            sameSite: 'Lax',
             maxAge: 60 * 60 * 1000,
         });
 
@@ -168,7 +168,7 @@ export const deleteUser = async (req, res) => {
 
 export const getProfile = async (req, res) => {
     try {
-        // Fetch user from database
+        // Fetch user from database without password
         const user = await User.findById(req.user.id).select("-password");
 
         // Check if user exists
@@ -176,6 +176,7 @@ export const getProfile = async (req, res) => {
             return res.status(404).json({ success: false, message: "User not found" });
         }
 
+        // if successful, send user data
         res.status(200).json({ success: true, user });
     } catch (error) {
         res.status(500).json({ success: false, message: "Server error" });
