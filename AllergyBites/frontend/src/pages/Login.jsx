@@ -1,86 +1,64 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-    // Add the following code to the Login component:
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    // use the useNavigate hook to navigate to the home page after a successful login
-    const navigate = useNavigate();
+  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-    const handleLogin = async (e) => {
-        // prevents the default form submission behavior
-        e.preventDefault();
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-        // resets the error state
-        setError('');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null); // Clear previous errors
 
-        try {
-            // sends a POST request to the server with the username and password and stores
-            // the response in the response variable
-            const response = await axios.post('http://localhost:5000/api/users/login', {
-                username,
-                password,
-            });
+    try {
+      const res = await axios.post("http://localhost:5000/api/users/login", formData);
+      localStorage.setItem("jwtToken", res.data.token);
+      navigate("/"); // Redirect to home on success
+    } catch (err) {
+      setError(err.response?.data?.message || "Invalid username or password");
+      setFormData({ ...formData, password: "" }); // Clear password field on error
+    }
+  };
 
-            // stores the token in the local storage and navigates to the home page
-            const token = response.data.token;
-            localStorage.setItem('jwtToken', token);
-            
-            // successfully logged in, navigate to the home page
-            if (response.data.success) {
-                const token = response.data.token;
-                localStorage.setItem('jwtToken', token);
-                navigate('/');
-            
-            // failed to log in, display an error message and reset password field
-            } else {
-                setError(response.data.message);
-                setPassword('');
-            }
-        } catch (error) {
-            setError('Invalid username or password');
-            setPassword('');
-        }
-    };
-
-    // renders the login form
-    return (
+  return (
+    <div>
+      <h2>Login</h2>
+      <form onSubmit={handleSubmit}>
         <div>
-            <h2>Login</h2>
-            {/* displays login form */}
-            <form onSubmit={handleLogin}>
-                <div>
-                    <label>Username:</label>
-                    {/* captures the username input */}
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Password:</label>
-                    {/* captures the password input */}
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                {/* submits the form */}
-                <button type="submit">Login</button>
-            </form>
-            {/* displays error message */}
-            {error && <div style={{ color: 'red' }}>{error}</div>}
-            {/* navigates to the register page */}
-            <button onClick={() => navigate('/register')}>No Account yet? Register here</button>
+          <label>Username:</label>
+          <input
+            type="text"
+            name="username"
+            placeholder="Enter your username"
+            value={formData.username}
+            onChange={handleChange}
+            required
+          />
         </div>
-    );
+        <div>
+          <label>Password:</label>
+          <input
+            type="password"
+            name="password"
+            placeholder="Enter your password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <button type="submit">Login</button>
+      </form>
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      <button onClick={() => navigate("/register")}>No Account yet? Register here</button>
+    </div>
+  );
 };
 
 export default Login;

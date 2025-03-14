@@ -1,86 +1,99 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState('');
-    const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: "",
+    username: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-    const handleRegister = async (e) => {
-        e.preventDefault();
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-        // check if passwords match
-        if (password !== confirmPassword) {
-            setError('Passwords do not match');
-            return;
-        }
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-        try {
-            // axios is used so that backend and frontend can communicate
-            // snes a POST request to the server with data
-            const response = await axios.post('http://localhost:5000/api/users/register', {
-                username,
-                password,
-                confirmPassword,
-            });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null); // Clear previous errors
 
-            // if the response is successful, navigate to the login page
-            if (response.data.success) {
-                navigate('/login');
-            // if the response is unsuccessful, display an error message
-            } else {
-                setError(response.data.message);
-            }
-        } catch (error) {
-            setError('Error registering user');
-        }
-    };
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match!");
+      return;
+    }
 
-    return (
+    try {
+      await axios.post("http://localhost:5000/api/users/register", {
+        email: formData.email,
+        username: formData.username,
+        password: formData.password,
+      });
+
+      navigate("/login"); // Redirect to login after successful registration
+    } catch (err) {
+      setError(err.response?.data?.message || "Registration failed. Try again.");
+    }
+  };
+
+  return (
+    <div>
+      <h2>Register</h2>
+      <form onSubmit={handleSubmit}>
         <div>
-            <h2>Register</h2>
-            <form onSubmit={handleRegister}>
-                <div>
-                    <label>Username:</label>
-                    {/* captures the username input */}
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Password:</label>
-                    {/* captures the password input */}
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    {/* captures the confirm password input */}
-                    <label>Confirm Password:</label>
-                    <input
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit">Register</button>
-            </form>
-            {/* displays error message */}
-            {error && <div style={{ color: 'red' }}>{error}</div>}
-            {/* navigates to the login page */}
-            <button onClick={() => navigate('/login')}>Already have an Account? Login here</button>
+          <label>Email:</label>
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
         </div>
-    );
+        <div>
+          <label>Username:</label>
+          <input
+            type="text"
+            name="username"
+            placeholder="Enter your username"
+            value={formData.username}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label>Password:</label>
+          <input
+            type="password"
+            name="password"
+            placeholder="Enter your password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label>Confirm Password:</label>
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Re-enter your password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <button type="submit">Register</button>
+      </form>
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
+    </div>
+  );
 };
 
 export default Register;

@@ -1,30 +1,24 @@
-import express from 'express';
-import User from '../models/User.models.js';
+import express from "express";
+import { register } from "../controllers/user.controller.js";
+import { getAllUsers } from "../controllers/user.controller.js";
+
 
 const router = express.Router();
 
-// POST endpoint to add new user data to MongoDB
-router.post('/add', async (req, res) => {
-  const { firstName, lastName, email, password, age } = req.body;
+// Register a new user
+router.post("/register", register);
 
+router.get("/", getAllUsers);
+
+
+// Get all users
+router.get('/all', async (req, res) => {
   try {
-    // Create a new user document
-    const newUser = new User({
-      firstName,
-      lastName,
-      email,
-      password, // Password will be hashed before saving due to the pre-save hook
-      age,
-    });
-
-    // Save the new user to the database
-    await newUser.save();
-
-    // Respond with a success message
-    res.status(201).json({ message: 'Data added successfully!', newUser });
+    const users = await User.find(); // Fetch all users from the database
+    res.status(200).json(users); // Return the users as JSON
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Failed to add data', error });
+    res.status(500).json({ message: 'Failed to retrieve users', error });
   }
 });
 
