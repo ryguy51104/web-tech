@@ -1,4 +1,4 @@
-const axios = require('axios');
+import axios from 'axios';
 
 const SPOONACULAR_API_KEY = process.env.SPOONACULAR_API_KEY;
 const SPOONACULAR_BASE_URL = 'https://api.spoonacular.com/recipes/complexSearch';
@@ -8,7 +8,7 @@ const SPOONACULAR_BASE_URL = 'https://api.spoonacular.com/recipes/complexSearch'
  * @param {Object} filters - The dietary restrictions and search parameters.
  * @returns {Promise<Object>} - Recipe search results.
  */
-async function getRecipes(filters) {
+export const getRecipes = async (filters) => {
     try {
         const response = await axios.get(SPOONACULAR_BASE_URL, {
             params: {
@@ -26,5 +26,3 @@ async function getRecipes(filters) {
         throw new Error('Failed to fetch recipes from Spoonacular');
     }
 }
-
-module.exports = { getRecipes };

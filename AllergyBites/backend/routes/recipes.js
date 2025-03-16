@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { fetchRecipes } = require('../api/spoonacular');
+import { getRecipes } from '../utils/spoonacular.js';
 
 router.get('/recipes', async (req, res) => {
     try {
@@ -10,11 +10,13 @@ router.get('/recipes', async (req, res) => {
             query: req.query.query,
             number: req.query.number || 10
         };
-        const data = await fetchRecipes(filters);
-        res.json(data);
+        const data = await getRecipes(filters);
+        res.json({ success: true, data });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch recipes' });
+        console.error("Error fetching recipes:", error);
+        res.status(500).json({ success: false, message: 'Failed to fetch recipes' });
     }
 });
 
-module.exports = router;
+//module.exports = router;
+export default router;

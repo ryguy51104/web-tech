@@ -6,6 +6,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 
 import userRoutes from "./routes/user.route.js";
+import recipesRoutes from "./routes/recipes.js"
 
 // loading environment variables
 dotenv.config();
@@ -22,6 +23,8 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use("/api/users", userRoutes);
+
+app.use("/api/spoonacular", recipesRoutes);
 
 // starting the server
 app.listen(PORT, () => {
