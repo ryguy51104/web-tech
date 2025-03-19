@@ -20,6 +20,8 @@ export const getRecipes = async (filters) => {
                 intolerances: filters.intolerances, // Example: "dairy, gluten"
                 query: filters.query, // Search query like "pasta"
                 number: filters.number || 10, // Number of recipes to fetch
+                addRecipeInformation: true, // Include detailed recipe information
+                addRecipeNutrition: true, // Include nutritional information
             },
         });
 

@@ -8,8 +8,12 @@ const RecipeList = ({ recipes }) => {
                 {recipes.map((recipe) => (
                     <li key={recipe.id}>
                         <h2>{recipe.title}</h2>
-                        <div>{recipe.summary}</div>
                         <img src={recipe.image} alt={recipe.title} width="100"/>
+                        <div><strong>Summary:</strong></div>
+                        <p> <div 
+                                dangerouslySetInnerHTML={{ __html: recipe.summary }}
+                                style={{ whiteSpace: 'pre-wrap' }}
+                            /></p>
                     </li>
                 ))}
             </ul>
