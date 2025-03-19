@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Profile from './pages/Profile';
 import ChangePassword from './pages/ChangePassword';
 import PrivateRoute from './pages/PrivateRoute';
+import Recipes from './pages/Recipes';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/change-password" element={<ChangePassword />} />
+        <Route path="/recipes" element={<Recipes />} />
         {/* Add a private route for the Profile component */}
         <Route
           path="/profile"
