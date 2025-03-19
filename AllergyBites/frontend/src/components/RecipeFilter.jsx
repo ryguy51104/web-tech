@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { fetchRecipes } from '../services/recipeService';
+import { fetchRecipes } from '../services/recipeService.jsx';
 
 const RecipeFilter = ({ setRecipes }) => {
     const [filters, setFilters] = useState({

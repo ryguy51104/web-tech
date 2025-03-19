@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_APP_BACKEND_URL || 'http://localhost:5000/api/spoonacular';
 
 /**
  * Fetch recipes from the backend.
@@ -9,7 +9,7 @@ const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000
  */
 export async function fetchRecipes(filters) {
     try {
-        const response = await axios.get(`${API_BASE_URL}/recipes/search`, { params: filters });
+        const response = await axios.get(`${API_BASE_URL}/recipes`, { params: filters });
         return response.data.data;
     } catch (error) {
         console.error("Error fetching recipes:", error);

@@ -10,6 +10,9 @@ router.get('/recipes', async (req, res) => {
             query: req.query.query,
             number: req.query.number || 10
         };
+
+        console.log("Received filters:", filters);
+
         const data = await getRecipes(filters);
         res.json({ success: true, data });
     } catch (error) {
