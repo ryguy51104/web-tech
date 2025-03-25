@@ -1,0 +1,99 @@
+.card {
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    min-height: 200px;
+}
+
+.list li{
+    padding: 20px;
+    margin-top: 20px;
+    width: 90%;
+    list-style-type: none;
+    background-color: #CDE8E5;
+    border-radius: 5px;
+    box-shadow: 2.5px 2.5px 2.5px #EEF7FF;
+    cursor: pointer;
+}
+
+.list Link { 
+    color: #4D869C;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.list h2 { 
+    color: #4D869C;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.list h3 { 
+    color: #4D869C;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.list img {
+    width: 200px;
+    height: 170px;
+    border-radius: 5px;
+}
+
+.filter {
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+    box-shadow: 2.5px 2.5px 2.5px #EEF7FF;
+    background-color: #CDE8E5;
+    color: #4D869C;
+    flex-shrink: 0;
+    height: 250px;
+    position: sticky;
+    top: 20px;
+    width: 200px;
+}
+
+.filter h2 {
+    color: #4D869C;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.filter input {
+    color: #4D869C;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    margin-bottom: 10px;
+    width: 80%;
+    background-color: #EEF7FF;
+}
+
+.filter input:focus {
+    outline: none;
+}
+
+.filter select {
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    margin-bottom: 10px;
+    width: 80%;
+    background-color: #EEF7FF;
+}
+
+.filter select:focus {
+    background-color: #7AB2B2;
+    color: #EEF7FF;
+}
+
+.filter button {
+    background-color: #7AB2B2;
+    color: #EEF7FF;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 50%;
+}

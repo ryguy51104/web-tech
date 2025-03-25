@@ -69,18 +69,37 @@ export const login = async (req, res) => {
     res.cookie('jwt', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production' ? true : false,
-        sameSite: 'Lax',
+        sameSite: 'None',
         maxAge: 60 * 60 * 1000,
     });
 
     res.status(200).json({ success: true, message: 'Login successful' });
 }
 
+// Backend - Logout Route
 export const logout = async (req, res) => {
-    // clear cookies json web token to logout
-    res.clearCookie('jwt');
-    res.status(200).json({ success: true, message: 'Logged out successfully' });
+    console.log(req.cookies);
+    // Clear the jwt cookie
+    if (!req.cookies.jwt) {
+        console.log('No cookie found');
+        return res.status(400).json({ success: false, message: 'User not logged in' });
+    }
+
+    try {
+        // Clear the jwt cookie
+        res.clearCookie('jwt', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production' ? true : false,
+            sameSite: 'None',
+            maxAge: 0,
+        });
+
+        res.status(200).json({ success: true, message: 'Logged out successfully' });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: 'Server error' });
+    }
 };
+
 
 
 export const changePassword = async (req, res) => {
@@ -127,7 +146,7 @@ export const changePassword = async (req, res) => {
         res.cookie('jwt', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production' ? true : false,
-            sameSite: 'Lax',
+            sameSite: 'None',
             maxAge: 60 * 60 * 1000,
         });
 
@@ -168,7 +187,7 @@ export const deleteUser = async (req, res) => {
 
 export const getProfile = async (req, res) => {
     try {
-        // Fetch user from database without password
+        // Fetch user from database
         const user = await User.findById(req.user.id).select("-password");
 
         // Check if user exists
@@ -176,9 +195,16 @@ export const getProfile = async (req, res) => {
             return res.status(404).json({ success: false, message: "User not found" });
         }
 
-        // if successful, send user data
         res.status(200).json({ success: true, user });
     } catch (error) {
         res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+
+export const auth = async (req, res) => {
+    if (req.cookies.jwt) {
+        res.json({ success: true, isAuthenticated: true });
+    } else {
+        res.json({ success: false, isAuthenticated: false });
     }
 };

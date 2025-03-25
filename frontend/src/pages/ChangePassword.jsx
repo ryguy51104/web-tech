@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import styles from '../styles/ChangePassword.module.css';
 
 const ChangePassword = () => {
     const [oldPassword, setOldPassword] = useState('');
@@ -22,8 +23,7 @@ const ChangePassword = () => {
             // axios is used so that backend and frontend can communicate
             // send a PUT request to the server with data
             const response = await axios.put('http://localhost:5000/api/users/change-password',
-                { oldPassword, newPassword },
-                { withCredentials: true }
+                { oldPassword, newPassword }
             );
 
             // if the response is successful, navigate to the home page
@@ -45,7 +45,7 @@ const ChangePassword = () => {
     };
 
     return (
-        <div>
+        <div className={styles.changePassword}>
             <h2>Change Password</h2>
             <form onSubmit={handlePasswordChange}>
                 <div>

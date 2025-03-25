@@ -1,0 +1,113 @@
+.header {
+    color: #4D869C;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1rem 0;
+}
+.header img {
+    border-radius: 5px;
+}
+
+.header h1 {
+    font-size: 40px;
+    background-color: #CDE8E5;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.info {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1rem 0;
+    background-color: #CDE8E5;
+    border-radius: 10px;
+}
+
+.ingredients {
+    background-color: #CDE8E5;
+    border-radius: 5px;
+    padding:  10px;
+}
+
+.ingredientlist {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px 20px;
+    list-style: none;
+    padding: 0;
+    margin: 20px auto;
+}
+
+.ingredientlist li {
+    background: #f8f8f8;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.3s ease-in-out;
+}
+
+.ingredientlist li:hover {
+    background: #e0f7fa;
+}
+
+.ingredientlist li::before {
+    content: "🍴";
+    font-size: 20px;
+}
+
+.instructionlist {
+    background-color: #CDE8E5;
+    border-radius: 5px;
+    counter-reset: step-counter;
+    list-style: none;
+    padding: 20px;
+    margin: 20px auto;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.instructionlist li {
+    position: relative;
+    background: #f8f8f8;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease-in-out;
+}
+
+.instructionlist li:hover {
+    background: #e0f7fa;
+}
+
+.instructionlist li::before {
+    counter-increment: step-counter;
+    content: counter(step-counter) ". ";
+    font-weight: bold;
+    color: #ff5722;
+    margin-right: 8px;
+}
+
+
+
+.recipe h3 {
+    font-size: 20px;
+    color: #4D869C;
+    margin-bottom: 20px;
+}
+
+.recipe ul {
+    padding: 20px;
+    margin-top: 20px;
+    width: 90%;
+    list-style-type: none;
+    background-color: #CDE8E5;
+    border-radius: 5px;
+    box-shadow: 2.5px 2.5px 2.5px #EEF7FF;
+    cursor: pointer;
+}

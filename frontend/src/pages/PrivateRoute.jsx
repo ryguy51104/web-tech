@@ -12,6 +12,7 @@ const PrivateRoute = ({ children }) => {
                 const response = await axios.get("http://localhost:5000/api/users/profile", {
                     withCredentials: true,
                 });
+
                 // If the server responds successfully, the user is authenticated
                 if (response.data.success) {
                     setIsAuthenticated(true);

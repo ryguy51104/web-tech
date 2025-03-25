@@ -4,7 +4,7 @@ const authMiddleware = (req, res, next) => {
     const token = req.cookies.jwt;
 
     if (!token) {
-        return res.status(401).json({ success: false, message: "Unauthorized" });
+        return res.status(401).json({ success: false, isAuthenticated: false, message: "Unauthorized" });
     }
 
     try {
@@ -12,9 +12,8 @@ const authMiddleware = (req, res, next) => {
         req.user = decoded;
         next();
     } catch (error) {
-        res.status(403).json({ success: false, message: "Invalid token" });
+        res.status(403).json({ success: false, isAuthenticated: false, message: "Invalid token" });
     }
 };
 
 export default authMiddleware;
-
