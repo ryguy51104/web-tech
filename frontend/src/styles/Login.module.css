@@ -1,21 +1,19 @@
 .login {
-    margin: 10px;
+    background-color: #CDE8E5;
+    color: #4D869C;
+    margin-top: 20px;
+    margin-left: 10px;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 2.5px 2.5px 2.5px #EEF7FF;
+    width: 200px;
+    height: 250px;
 }
 
 .login h2 {
     color: #4D869C;
     margin-bottom: 20px;
     border-radius: 5px;
-}
-
-.card {
-    background-color: #CDE8E5;
-    color: #4D869C;
-    margin: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 2.5px 2.5px 2.5px #EEF7FF;
-    width: 300px;
 }
 
 .login form {

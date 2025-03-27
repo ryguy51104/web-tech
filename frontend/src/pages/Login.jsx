@@ -47,7 +47,6 @@ const Login = () => {
     return (
         <div className={styles.login}>
             {/* displays login form */}
-            <div className={styles.card}>
                 <form onSubmit={handleLogin}>
                     <h2>Login</h2>
                     <div>
@@ -74,7 +73,6 @@ const Login = () => {
                     <button type="submit">Login</button>
                 </form>
                 <Link className={styles.link} to="/register">No Account yet? Register here</Link>
-            </div>
             {/* displays error message */}
             {error && <div style={{ color: 'red' }}>{error}</div>}
             {/* navigates to the register page */}

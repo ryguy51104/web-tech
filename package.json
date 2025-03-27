@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon backend/server.js",
+    "backend": "nodemon api/server.js",
+    "frontend": "cd frontend && npm run dev",
+    "dev": "concurrently \"npm run frontend\" \"npm run backend\"",
     "start": "node backend/server.js",
     "build": "cd frontend && npm run build"
   },
@@ -15,6 +17,7 @@
     "allergybites": "file:",
     "axios": "^1.8.2",
     "bcryptjs": "^3.0.2",
+    "concurrently": "^9.1.2",
     "cookie-parser": "^1.4.7",
     "cookieparser": "^0.1.0",
     "cors": "^2.8.5",
